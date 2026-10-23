@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111612">
+    <meta name="description" content="Understand JavaScript code with a clear, beginner-friendly AI explanation.">
+    <title>AI Code Explainer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="node_modules/@highlightjs/cdn-assets/styles/github-dark.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="node_modules/@highlightjs/cdn-assets/highlight.min.js" defer></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="AI Code Explainer home">
+          <span class="brand-mark" aria-hidden="true">{ }</span>
+          <span>AI Code <strong>Explainer</strong></span>
+        </a>
+        <span class="topbar-note"><span class="status-dot"></span> JavaScript, made clearer</span>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <p class="eyebrow">A clearer way to read code</p>
+          <h1 id="page-title">Understand JavaScript code <span>with AI.</span></h1>
+          <p class="intro-copy">Paste a snippet. Get a thoughtful, plain-language walkthrough.</p>
+        </section>
+
+        <section class="workbench" aria-label="JavaScript code explainer">
+          <article class="panel editor-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="section-kicker">01 / YOUR INPUT</span>
+                <h2>JavaScript</h2>
+              </div>
+              <label class="select-wrap" for="example-select">
+                <span class="sr-only">Load an example snippet</span>
+                <select id="example-select" aria-label="Load an example snippet">
+                  <option value="">Examples</option>
+                  <option value="discount">Discount calculator</option>
+                  <option value="group">Group items</option>
+                  <option value="retry">Retry a request</option>
+                </select>
+              </label>
+            </div>
+
+            <label class="sr-only" for="code-input">JavaScript code to explain</label>
+            <div class="editor-frame">
+              <div class="editor-chrome" aria-hidden="true">
+                <span class="window-dots"><i></i><i></i><i></i></span>
+                <span>snippet.js</span>
+                <span class="language-tag">JS</span>
+              </div>
+              <textarea id="code-input" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-describedby="editor-hint" placeholder="Paste your JavaScript here...">function calculateDiscount(price, percentage) {
+  if (price < 0 || percentage < 0 || percentage > 100) {
+    return null;
+  }
+
+  const discount = price * (percentage / 100);
+  return price - discount;
+}
+
+const finalPrice = calculateDiscount(80, 25);
+console.log("Your price is $" + finalPrice);</textarea>
+            </div>
+
+            <div class="editor-meta">
+              <span id="editor-hint">Your code is sent as text only. It is never run here.</span>
+              <span id="code-count" aria-live="polite">0 lines · 0 characters</span>
+            </div>
+
+            <div class="editor-options">
+              <label for="difficulty-select">Explanation level</label>
+              <select id="difficulty-select">
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+              </select>
+              <span class="options-spacer"></span>
+              <button class="button button-quiet" id="copy-code-button" type="button" title="Copy code" aria-label="Copy code">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="10" rx="1.5"></rect><path d="M13 7V4.8A1.8 1.8 0 0 0 11.2 3H5.8A1.8 1.8 0 0 0 4 4.8v7.4A1.8 1.8 0 0 0 5.8 14H7"></path></svg>
+                <span>Copy code</span>
+              </button>
+              <button class="button button-quiet" id="clear-button" type="button" title="Clear code" aria-label="Clear code">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 5.5h12M8 5.5V4h4v1.5m2.5 0-.6 10H6.1l-.6-10M8.2 8.2v4.6m3.6-4.6v4.6"></path></svg>
+                <span>Clear</span>
+              </button>
+            </div>
+
+            <div class="editor-actions">
+              <p id="request-message" class="request-message" role="status" aria-live="polite"></p>
+              <button class="button button-primary" id="explain-button" type="button">
+                <span class="button-label">Explain code</span>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4"></path></svg>
+              </button>
+            </div>
+          </article>
+
+          <article class="panel result-panel" aria-labelledby="result-title" aria-busy="false">
+            <div class="panel-heading result-heading">
+              <div>
+                <span class="section-kicker">02 / THE BREAKDOWN</span>
+                <h2 id="result-title">Your explanation</h2>
+              </div>
+              <button class="icon-button" id="copy-explanation-button" type="button" title="Copy explanation" aria-label="Copy explanation" disabled>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="10" rx="1.5"></rect><path d="M13 7V4.8A1.8 1.8 0 0 0 11.2 3H5.8A1.8 1.8 0 0 0 4 4.8v7.4A1.8 1.8 0 0 0 5.8 14H7"></path></svg>
+              </button>
+            </div>
+            <div class="result-content" id="result-content" aria-live="polite" aria-atomic="false">
+              <div class="empty-state" id="empty-state">
+                <span class="empty-icon" aria-hidden="true">↳</span>
+                <h3>Your walkthrough will appear here</h3>
+                <p>Ask for an explanation to see a summary, a step-by-step guide, potential bugs, and more.</p>
+                <div class="empty-checklist"><span>01</span> What it does <span>02</span> How it works <span>03</span> Improvements</div>
+              </div>
+              <div class="loading-state" id="loading-state" hidden>
+                <span class="loader" aria-hidden="true"></span>
+                <div><strong>Reading your code</strong><span>Building a clear explanation...</span></div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- Keep generation in its own workbench so it does not affect explanation state. -->
+        <section class="workbench generator-workbench" aria-label="AI code generator">
+          <article class="panel editor-panel generator-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="section-kicker">03 / DESCRIBE WHAT YOU NEED</span>
+                <h2>Code Generator</h2>
+              </div>
+            </div>
+
+            <label class="sr-only" for="generation-prompt">Describe the code you want generated</label>
+            <div class="editor-frame prompt-frame">
+              <div class="editor-chrome" aria-hidden="true">
+                <span class="window-dots"><i></i><i></i><i></i></span>
+                <span>your-request.txt</span>
+                <span class="language-tag">PROMPT</span>
+              </div>
+              <textarea id="generation-prompt" maxlength="4000" aria-describedby="generation-hint" placeholder="For example: Create a JavaScript function to sort an array..."></textarea>
+            </div>
+            <div class="editor-meta">
+              <span id="generation-hint">Describe the behavior, language, and any requirements.</span>
+              <span id="prompt-count">0 / 4000</span>
+            </div>
+            <div class="editor-actions generator-actions">
+              <p id="generator-message" class="request-message" role="status" aria-live="polite"></p>
+              <div class="generator-action-buttons">
+                <button class="button button-quiet" id="clear-generation-button" type="button">Clear</button>
+                <button class="button button-primary" id="generate-button" type="button">
+                  <span class="button-label">Generate code</span>
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4"></path></svg>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel result-panel generator-result-panel" aria-labelledby="generated-result-title" aria-busy="false">
+            <div class="panel-heading result-heading">
+              <div>
+                <span class="section-kicker">04 / GENERATED OUTPUT</span>
+                <h2 id="generated-result-title">Your code</h2>
+              </div>
+              <button class="button button-quiet generator-copy-button" id="copy-generated-code-button" type="button" disabled>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="10" rx="1.5"></rect><path d="M13 7V4.8A1.8 1.8 0 0 0 11.2 3H5.8A1.8 1.8 0 0 0 4 4.8v7.4A1.8 1.8 0 0 0 5.8 14H7"></path></svg>
+                <span>Copy code</span>
+              </button>
+            </div>
+            <div class="result-content generator-result-content" id="generator-result-content" aria-live="polite">
+              <div class="empty-state generator-empty-state" id="generator-empty-state">
+                <span class="empty-icon" aria-hidden="true">{ }</span>
+                <h3>Your generated code will appear here</h3>
+                <p>Describe a function, API, component, or other coding task to get started.</p>
+              </div>
+              <div class="loading-state generator-loading-state" id="generator-loading-state" hidden>
+                <span class="loader" aria-hidden="true"></span>
+                <div><strong>Generating your code</strong><span>Putting together a clean implementation...</span></div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="workbench translator-workbench" aria-label="Code Translator">
+          <article class="panel editor-panel translator-editor-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="section-kicker">05 / TRANSLATE BETWEEN LANGUAGES</span>
+                <h2>Code Translator</h2>
+              </div>
+            </div>
+
+            <div class="translator-language-controls">
+              <label for="source-language">
+                <span>From language</span>
+                <select id="source-language">
+                  <option value="javascript">JavaScript</option>
+                  <option value="typescript">TypeScript</option>
+                  <option value="python">Python</option>
+                  <option value="java">Java</option>
+                  <option value="cpp">C++</option>
+                  <option value="csharp">C#</option>
+                  <option value="go">Go</option>
+                  <option value="php">PHP</option>
+                  <option value="sql">SQL</option>
+                </select>
+              </label>
+              <span class="translator-arrow" aria-hidden="true">→</span>
+              <label for="target-language">
+                <span>To language</span>
+                <select id="target-language">
+                  <option value="javascript">JavaScript</option>
+                  <option value="typescript">TypeScript</option>
+                  <option value="python" selected>Python</option>
+                  <option value="java">Java</option>
+                  <option value="cpp">C++</option>
+                  <option value="csharp">C#</option>
+                  <option value="go">Go</option>
+                  <option value="php">PHP</option>
+                  <option value="sql">SQL</option>
+                </select>
+              </label>
+            </div>
+
+            <label class="sr-only" for="translation-input">Source code to translate</label>
+            <div class="editor-frame translator-editor-frame">
+              <div class="editor-chrome" aria-hidden="true">
+                <span class="window-dots"><i></i><i></i><i></i></span>
+                <span id="source-file-name">source.js</span>
+                <span class="language-tag" id="source-language-tag">JS</span>
+              </div>
+              <textarea id="translation-input" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-describedby="translator-hint" placeholder="Paste the code you want to translate..."></textarea>
+            </div>
+
+            <div class="editor-meta">
+              <span id="translator-hint">Your code is sent to your local Ollama model as text only.</span>
+              <span id="translator-code-count" aria-live="polite">0 characters</span>
+            </div>
+            <div class="editor-actions translator-actions">
+              <p id="translator-message" class="request-message" role="status" aria-live="polite"></p>
+              <div class="generator-action-buttons">
+                <button class="button button-quiet" id="clear-translation-button" type="button">Clear</button>
+                <button class="button button-primary" id="translate-button" type="button">
+                  <span class="button-loader" aria-hidden="true" hidden></span>
+                  <span class="button-label">Translate code</span>
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4"></path></svg>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel result-panel translator-result-panel" aria-labelledby="translated-result-title" aria-busy="false">
+            <div class="panel-heading result-heading">
+              <div>
+                <span class="section-kicker">06 / TRANSLATED OUTPUT</span>
+                <h2 id="translated-result-title">Translated code</h2>
+              </div>
+              <button class="button button-quiet generator-copy-button" id="copy-translated-code-button" type="button" disabled>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="10" rx="1.5"></rect><path d="M13 7V4.8A1.8 1.8 0 0 0 11.2 3H5.8A1.8 1.8 0 0 0 4 4.8v7.4A1.8 1.8 0 0 0 5.8 14H7"></path></svg>
+                <span>Copy</span>
+              </button>
+            </div>
+            <div class="result-content translator-result-content" id="translator-result-content" aria-live="polite">
+              <div class="empty-state translator-empty-state" id="translator-empty-state">
+                <span class="empty-icon" aria-hidden="true">⇄</span>
+                <h3>Your translated code will appear here</h3>
+                <p>Choose source and target languages, then translate your code with Ollama.</p>
+              </div>
+              <div class="loading-state translator-loading-state" id="translator-loading-state" hidden>
+                <span class="loader" aria-hidden="true"></span>
+                <div><strong>Translating your code</strong><span>Preserving its functionality in the target language...</span></div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="how-it-works" aria-labelledby="how-title">
+          <div class="how-heading">
+            <span class="section-kicker">A SIMPLE FLOW</span>
+            <h2 id="how-title">How it works</h2>
+          </div>
+          <ol class="flow-list">
+            <li><span class="flow-number">01</span><span>Your code</span></li>
+            <li><span class="flow-number">02</span><span>JavaScript app</span></li>
+            <li><span class="flow-number">03</span><span>AI analysis</span></li>
+            <li><span class="flow-number">04</span><span>Clear explanation</span></li>
+          </ol>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>Made for curious minds and readable code.</span>
+        <span class="privacy-note"><span aria-hidden="true">◈</span> Code is analyzed as text, never executed.</span>
+      </footer>
+    </div>
+  </body>
+</html>
