@@ -28,9 +28,10 @@ AI Code Explainer is a small, responsive coding tool. Explain a pasted JavaScrip
 
 ```text
 ai-code-explainer/
-├── index.html       # Application UI
-├── style.css        # Responsive styles
-├── script.js        # Browser interactions and safe Markdown display
+├── public/
+│   ├── index.html   # Application UI
+│   ├── style.css    # Responsive styles
+│   └── script.js    # Browser interactions and safe Markdown display
 ├── server.js        # Static server and shared Ollama proxy for all features
 ├── package.json     # Dependencies and commands
 ├── .env.example     # Environment variable template (no secret)
