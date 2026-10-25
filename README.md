@@ -28,13 +28,15 @@ AI Code Explainer is a small, responsive coding tool. Explain a pasted JavaScrip
 
 ```text
 ai-code-explainer/
+├── backend/
+│   ├── server.js        # Static server and shared Ollama proxy for all features
+│   ├── package.json     # Backend dependencies and commands
+│   ├── package-lock.json
+│   └── .env.example     # Environment variable template (no secret)
 ├── public/
 │   ├── index.html   # Application UI
 │   ├── style.css    # Responsive styles
 │   └── script.js    # Browser interactions and safe Markdown display
-├── server.js        # Static server and shared Ollama proxy for all features
-├── package.json     # Dependencies and commands
-├── .env.example     # Environment variable template (no secret)
 ├── .gitignore       # Excludes secrets and installed packages
 └── README.md
 ```
@@ -42,8 +44,8 @@ ai-code-explainer/
 ## Install
 
 1. Install Node.js 18.18 or later.
-2. Open a terminal in this project directory.
-3. Install the dependencies:
+2. Open a terminal in the `backend` directory.
+3. Install the backend dependencies:
 
    ```sh
    npm install
@@ -57,7 +59,7 @@ Install Ollama for Windows from <https://ollama.com/download/windows>, then down
 & "$env:LOCALAPPDATA\Programs\Ollama\ollama.exe" pull qwen2.5-coder:1.5b
 ```
 
-Create a local `.env` file by copying `.env.example`:
+In the `backend` directory, create a local `.env` file by copying `.env.example`:
 
 ```env
 OLLAMA_BASE_URL=http://127.0.0.1:11434
@@ -74,7 +76,7 @@ Start Ollama before starting this app. `.env` is ignored by Git. Set `OLLAMA_MOD
 
 ## Run locally
 
-Start the app from the project directory:
+Start the app from the `backend` directory:
 
 ```sh
 npm start

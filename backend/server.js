@@ -217,7 +217,7 @@ function respondWithOllamaError(response, error, operation, stats) {
 
 app.use(express.json({ limit: "32kb" }));
 app.use("/vendor/highlightjs", express.static(path.join(__dirname, "node_modules", "@highlightjs", "cdn-assets")));
-app.use(express.static(path.join(__dirname, "public"), { index: "index.html" }));
+app.use(express.static(path.join(__dirname, "..", "public"), { index: "index.html" }));
 
 app.post("/api/explain", async (request, response) => {
   const { code, difficulty } = request.body || {};
