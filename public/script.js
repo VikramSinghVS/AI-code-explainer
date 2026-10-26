@@ -253,13 +253,21 @@ function setElementMessage(element, message, kind = "error") {
   element.dataset.kind = kind;
 }
 
-// Consume Ollama's NDJSON stream and forward each generated fragment to its feature UI.
-async function streamOllama(endpoint, requestBody, onToken) {
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(requestBody),
-  });
+// Consume the server's NDJSON stream and forward each generated fragment to its feature UI.
+async function streamNVIDIA(endpoint, requestBody, onToken) {
+  let response;
+  try {
+    response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestBody),
+    });
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new Error("Could not reach the app server. Make sure it is running and try again.");
+    }
+    throw error;
+  }
 
   if (!response.ok) {
     if (response.status === 405) {
@@ -300,7 +308,7 @@ async function streamOllama(endpoint, requestBody, onToken) {
     } catch {
       throw new Error("The server returned an invalid streamed response.");
     }
-    if (event.type === "error") throw new Error(event.error || "The Ollama request failed.");
+    if (event.type === "error") throw new Error(event.error || "The NVIDIA API request failed.");
     if (event.type === "token" && typeof event.content === "string") {
       chunks.push(event.content);
       onToken(event.content);
@@ -354,7 +362,7 @@ async function explainCode() {
   stream.className = "explanation explanation-stream";
   let streamedText = "";
   try {
-    const result = await streamOllama("/api/explain", { code, difficulty: difficultySelect.value }, (token) => {
+    const result = await streamNVIDIA("/api/explain", { code, difficulty: difficultySelect.value }, (token) => {
       streamedText += token;
       if (!stream.isConnected) resultContent.append(stream);
       loadingState.hidden = true;
@@ -371,9 +379,7 @@ async function explainCode() {
     const errorPanel = document.createElement("div");
     errorPanel.className = "error-panel";
     errorPanel.setAttribute("role", "alert");
-    errorPanel.textContent = error instanceof TypeError
-      ? "Could not reach the app server. Make sure it is running and try again."
-      : error.message;
+    errorPanel.textContent = error.message;
     resultContent.append(errorPanel);
     copyExplanationButton.disabled = true;
     setMessage("We couldn't finish that request.");
@@ -442,7 +448,7 @@ async function generateCode() {
   pre.append(code);
   let streamedCode = "";
   try {
-    const result = await streamOllama("/api/generate", { prompt }, (token) => {
+    const result = await streamNVIDIA("/api/generate", { prompt }, (token) => {
       streamedCode += token;
       if (!pre.isConnected) generatorResultContent.append(pre);
       generatorLoadingState.hidden = true;
@@ -459,9 +465,7 @@ async function generateCode() {
     const errorPanel = document.createElement("div");
     errorPanel.className = "error-panel";
     errorPanel.setAttribute("role", "alert");
-    errorPanel.textContent = error instanceof TypeError
-      ? "Could not reach the app server. Make sure it is running and try again."
-      : error.message;
+    errorPanel.textContent = error.message;
     generatorResultContent.append(errorPanel);
     copyGeneratedCodeButton.disabled = true;
     setElementMessage(generatorMessage, "We couldn't generate that code.");
@@ -525,7 +529,7 @@ async function translateCode() {
   pre.append(output);
   let streamedCode = "";
   try {
-    const result = await streamOllama("/api/translate", { code, sourceLanguage, targetLanguage }, (token) => {
+    const result = await streamNVIDIA("/api/translate", { code, sourceLanguage, targetLanguage }, (token) => {
       streamedCode += token;
       if (!pre.isConnected) translatorResultContent.append(pre);
       translatorLoadingState.hidden = true;
@@ -542,9 +546,7 @@ async function translateCode() {
     const errorPanel = document.createElement("div");
     errorPanel.className = "error-panel";
     errorPanel.setAttribute("role", "alert");
-    errorPanel.textContent = error instanceof TypeError
-      ? "Could not reach the app server. Make sure it is running and try again."
-      : error.message;
+    errorPanel.textContent = error.message;
     translatorResultContent.append(errorPanel);
     copyTranslatedCodeButton.disabled = true;
     setElementMessage(translatorMessage, "We couldn't translate that code.");
